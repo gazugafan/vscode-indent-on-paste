@@ -5,8 +5,21 @@ const { copy, paste } = require('copy-paste');
 
 let config = vscode.workspace.getConfiguration('indentOnPaste');
 let editor = vscode.window.activeTextEditor;
+let clipboardPasteActionCommand:vscode.Disposable = null;
+let extension: vscode.ExtensionContext = null;
 
-let indentOnPaste = () => {
+let indentOnPaste = () =>
+{
+	//TODO: instead of manually pasting, use the paste command (to retain format on paste and such)...
+	// console.log("PASTE");
+	// clipboardPasteActionCommand.dispose();
+
+	// vscode.commands.executeCommand('editor.action.clipboardPasteAction').then(() =>
+	// {
+	// 	console.log("DONE");
+	// 	clipboardPasteActionCommand = vscode.commands.registerCommand('editor.action.clipboardPasteAction', indentOnPaste);
+	// 	extension.subscriptions.push(clipboardPasteActionCommand);
+	// });
 
 	//get the line we will be pasting on...
 	let pasteOnLineNumber = editor.selection.end.line;
@@ -155,7 +168,9 @@ export function setIndents(str:string, indents:number)
 }
 
 export function activate(context: vscode.ExtensionContext) {
-    context.subscriptions.push(vscode.commands.registerCommand('indentOnPaste.action', indentOnPaste));
+	extension = context;
+	clipboardPasteActionCommand = vscode.commands.registerCommand('editor.action.clipboardPasteAction', indentOnPaste)
+	extension.subscriptions.push(clipboardPasteActionCommand);
 }
 
 export function deactivate() {

@@ -7,6 +7,8 @@ Rubymaniac's extension is awesome, but it selects and reformats code after it ha
 
 I also wanted to clean up the re-indentation algorithm. This extension looks for something resembling a "closing block" on the line following the target location (things like closing braces, closing tags, and PHP template endif's). Closing braces are easier to detect in a universal language-agnostic way, and this lets me indent the pasted code accordingly.
 
+Finally, this extension doesn't rely on remapping the Ctrl+V keybinding. Instead, it hijacks VS Code's native paste command. So, after installing it should just work--no matter how you paste. Ctrl+V, Edit > Paste, Right Click > Paste. It should all just work!
+
 ## Install
 
 Via Quick Open:
@@ -28,45 +30,13 @@ Via the command line:
 2. Run `code --install-extension gazugafan.vscode-indent-on-paste`
 
 ## Dependencies
-Access to the system clipboard isn't available through the normal VS Code extension API. Instead, we rely on [Node-Copy-Paste](https://github.com/xavi-/node-copy-paste). Node-Copy-Paste is included with this extension and should work out-of-the-box on Windows (it uses `clip`). However, OSX and Linux users may need to install `pbcopy/pbpaste` or `xclip`, respectively. I'm honestly not sure, but check out [Node-Copy-Paste](https://github.com/xavi-/node-copy-paste) if you're having trouble.
+Should work out-of-the-box on Windows.
+
+Access to the system clipboard isn't available through the normal VS Code extension API. Instead, we rely on [Node-Copy-Paste](https://github.com/xavi-/node-copy-paste). Node-Copy-Paste is included with this extension and should work out-of-the-box on Windows (it uses `clip`). However, OSX and Linux users may need to install `pbcopy/pbpaste` or `xclip`, respectively. I'm honestly not sure, but check out [Node-Copy-Paste](https://github.com/xavi-/node-copy-paste) if you're having trouble, and feel free to update this README with your findings!
 
 ## Usage
 
-This extension provides one command:
-
-```
-indentOnPaste.action
-```
-
-which does all the work. Your job is to bind it to whatever key combination you like
-(note however that this command is **not** available via the Command Pallette `cmd+shift+p`).
-
-Use the following example keybindings to use Ctrl+V to paste and indent:
-
-*keybindings.json*
-```json
-[
-    {
-        "key": "ctrl+v",
-        "command": "indentOnPaste.action",
-        "when": "editorTextFocus && !editorReadonly"
-    },
-    {
-        "key": "ctrl+v",
-        "command": "editor.action.clipboardPasteAction",
-        "when": "!editorTextFocus"
-    },
-    {
-        "key": "ctrl+shift+v",
-        "command": "editor.action.clipboardPasteAction",
-        "when": "editorTextFocus && !editorReadonly"
-    }
-]
-```
-
-**Note:** Mac users should change `ctrl` to `cmd`
-
-**Note**: Reverted to the built-in command `editor.action.clipboardPasteAction` when the editor has lost focus (the case with `ctrl+F` and then paste)
+Just paste like normal! No need to change keybindings or anything.
 
 
 ## Configuration
@@ -77,7 +47,7 @@ When determining whether a line of code is an ending block or not, we strip out 
 
 ## Limitations
 
-* This extension completely circumvents VS Code's built-in paste functionality. So, things like formatting on paste will likely not work well alongside this.
+* This extension completely circumvents VS Code's built-in paste functionality. So, things like formatting on paste will likely not work well alongside this at the moment. I'm going to be testing a slightly different approach soon that will hopefully fix this.
 
 * Pasting code that immediately begins with a line at the lowest level of indentation, and does NOT include any other lines at this level, will be problematic. For example, consider the following...
 ```ts
