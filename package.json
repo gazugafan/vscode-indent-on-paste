@@ -2,7 +2,7 @@
   "name": "vscode-indent-on-paste",
   "displayName": "Indent on Paste",
   "description": "Re-indents pasted code to match the destination",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "publisher": "gazugafan",
   "license": "MIT",
   "engines": {
