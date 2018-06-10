@@ -1,7 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-const { copy, paste } = require('copy-paste');
+const { copy, paste } = require('copy-paste-win32fix');
 
 let config = vscode.workspace.getConfiguration('indentOnPaste');
 let editor = vscode.window.activeTextEditor;
