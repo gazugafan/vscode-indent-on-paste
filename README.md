@@ -82,7 +82,7 @@ For any bugs and feature requests please open an issue. For code contributions p
 
 MIT License
 
-Copyright (c) rubymaniac
+Copyright (c) gazugafan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
