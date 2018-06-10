@@ -45,12 +45,10 @@
             "]",
             ">",
             "</",
-            "<?endif",
-            "<?phpendif",
+            "<?end",
+            "<?phpend",
             "<?else",
-            "<?phpelse",
-            "<?endfor",
-            "<?phpendfor"
+            "<?phpelse"
           ],
           "description": "Pasting into a position followed by a line starting with one of these ending blocks will cause a (likely correct) extra indentation. Whitespace is stripped out when examining lines for end blocks."
         }

@@ -42,7 +42,7 @@ Just paste like normal! No need to change keybindings or anything.
 ## Configuration
 Use the `indentOnPaste.endingBlocks` setting to change what ending blocks we look for. Whenever you paste code above an ending block, the code will be indented one level deeper (so it sits inside that block).
 
-When determining whether a line of code is an ending block or not, we strip out all whitespace, and we only check that the line begins that way. For example, `</` should match any closing tag pretty well (`</div>`, `</span>`, etc all start with `</`), and `<?phpendif` would match closing PHP template endif's (`<?php endif?>`).
+When determining whether a line of code is an ending block or not, we strip out all whitespace, and we only check that the line begins that way. For example, `</` should match any closing tag pretty well (`</div>`, `</span>`, etc all start with `</`), and `<?phpend` would match closing PHP template endif's, endfor's, etc (`<?php endif?>`, `<?php endforeach?>`, etc).
 
 
 ## Limitations
