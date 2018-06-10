@@ -3,7 +3,7 @@
 Attempts to re-indent code before it is pasted, using some generalized indentation rules. This was inspired by, but completely separate from [Paste and Indent by Rubymaniac](https://github.com/rubymaniac/vscode-paste-and-indent).
 
 ## Another Paste and Indent extension?
-Rubymaniac's extension is awesome, but it selects and reformats code after it has been pasted in. This seems to have led to some weird bugs where bits of code are left selected after pasting. This extension bypasses VS Code's clipboard functionality altogether, and instead modifies the content to be pasted before placing it in the editor using alternative methods.
+Rubymaniac's extension is awesome, but it selects and reformats code after it has been pasted in. This seems to have led to some weird bugs where bits of code are left selected after pasting. This extension takes a different approach by modifying the clipboard contents *before* it is pasted (and then immediately restores the original clipboard contents aftewards).
 
 I also wanted to clean up the re-indentation algorithm. This extension looks for something resembling a "closing block" on the line following the target location (things like closing braces, closing tags, and PHP template endif's). Closing braces are easier to detect in a universal language-agnostic way, and this lets me indent the pasted code accordingly.
 
@@ -46,8 +46,6 @@ When determining whether a line of code is an ending block or not, we strip out 
 
 
 ## Limitations
-
-* This extension completely circumvents VS Code's built-in paste functionality. So, things like formatting on paste will likely not work well alongside this at the moment. I'm going to be testing a slightly different approach soon that will hopefully fix this.
 
 * Pasting code that immediately begins with a line at the lowest level of indentation, and does NOT include any other lines at this level, will be problematic. For example, consider the following...
 ```ts

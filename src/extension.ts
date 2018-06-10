@@ -10,17 +10,6 @@ let extension: vscode.ExtensionContext = null;
 
 let indentOnPaste = () =>
 {
-	//TODO: instead of manually pasting, use the paste command (to retain format on paste and such)...
-	// console.log("PASTE");
-	// clipboardPasteActionCommand.dispose();
-
-	// vscode.commands.executeCommand('editor.action.clipboardPasteAction').then(() =>
-	// {
-	// 	console.log("DONE");
-	// 	clipboardPasteActionCommand = vscode.commands.registerCommand('editor.action.clipboardPasteAction', indentOnPaste);
-	// 	extension.subscriptions.push(clipboardPasteActionCommand);
-	// });
-
 	//get the line we will be pasting on...
 	let pasteOnLineNumber = editor.selection.end.line;
 	let pasteOnLine: string = editor.document.lineAt(pasteOnLineNumber).text;
@@ -53,6 +42,7 @@ let indentOnPaste = () =>
 
 	//get the clipboard contents and redo the indentations...
 	let clipboard: string = getClipboard();
+	let originalClipboard:string = clipboard;
 	let lines = clipboard.split("\n");
 
 	//just abort if there's nothing on the clipboard...
@@ -103,20 +93,36 @@ let indentOnPaste = () =>
 		}
 	}
 
-	//replace whatever's currently selected with the modified clipboard contents...
-	editor.edit((textInserter) => {
-		//if we're pasting on a blank line, start replacing at the very beginning of the line (replace current indentation)...
-		if (pasteOnBlankLine)
-			textInserter.replace(new vscode.Selection(editor.selection.start.line, 0, editor.selection.end.line, editor.selection.end.character), clipboard);
-		else
-			textInserter.replace(editor.selection, clipboard);
+	//replace the clipboard contents with the modified version...
+	copy(clipboard, ()=>{
+
+		//after the clipboard has been updated, call VS Code's native paste command.
+		//We need to remove our event handler for this first so we don't cause infinite recursion, and then add it back in afterwards...
+		clipboardPasteActionCommand.dispose();
+		vscode.commands.executeCommand('editor.action.clipboardPasteAction').then(() =>
+		{
+			clipboardPasteActionCommand = vscode.commands.registerCommand('editor.action.clipboardPasteAction', indentOnPaste);
+			extension.subscriptions.push(clipboardPasteActionCommand);
+
+			//restore the unmodified version of the clipboard...
+			copy(originalClipboard);
+		});
 	});
 
-	//move cursor to end of pasted content (and unselect previous selection)...
-	if (!pasteOnBlankLine && lines.length == 1)
-		editor.selection = new vscode.Selection(editor.selection.start.line + lines.length - 1, editor.selection.start.character + lines[lines.length - 1].length, editor.selection.start.line + lines.length - 1, editor.selection.start.character + lines[lines.length - 1].length);
-	else
-		editor.selection = new vscode.Selection(editor.selection.start.line + lines.length - 1, lines[lines.length - 1].length, editor.selection.start.line + lines.length - 1, lines[lines.length - 1].length);
+	//replace whatever's currently selected with the modified clipboard contents...
+	// editor.edit((textInserter) => {
+	// 	//if we're pasting on a blank line, start replacing at the very beginning of the line (replace current indentation)...
+	// 	if (pasteOnBlankLine)
+	// 		textInserter.replace(new vscode.Selection(editor.selection.start.line, 0, editor.selection.end.line, editor.selection.end.character), clipboard);
+	// 	else
+	// 		textInserter.replace(editor.selection, clipboard);
+	// });
+
+	// //move cursor to end of pasted content (and unselect previous selection)...
+	// if (!pasteOnBlankLine && lines.length == 1)
+	// 	editor.selection = new vscode.Selection(editor.selection.start.line + lines.length - 1, editor.selection.start.character + lines[lines.length - 1].length, editor.selection.start.line + lines.length - 1, editor.selection.start.character + lines[lines.length - 1].length);
+	// else
+	// 	editor.selection = new vscode.Selection(editor.selection.start.line + lines.length - 1, lines[lines.length - 1].length, editor.selection.start.line + lines.length - 1, lines[lines.length - 1].length);
 }
 
 export function getClipboard()
