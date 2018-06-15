@@ -2,7 +2,7 @@
   "name": "vscode-indent-on-paste",
   "displayName": "Indent on Paste",
   "description": "Re-indents pasted code to match the destination",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "publisher": "gazugafan",
   "license": "MIT",
   "engines": {
@@ -51,7 +51,16 @@
             "<?phpelse"
           ],
           "description": "Pasting into a position followed by a line starting with one of these ending blocks will cause a (likely correct) extra indentation. Whitespace is stripped out when examining lines for end blocks."
-        }
+        },
+		"indentOnPaste.pasteMethod": {
+			"type": "string",
+			"enum": [
+				"native",
+				"workaround"
+			],
+			"default": "native",
+			"description": "The method used to insert text when pasting. \"native\" uses VS Code's built-in paste method--retaining functionality such as \"editor.formatOnPaste\" and \"editor.autoIndent\". \"workaround\" completely bypasses VS Code's built-in paste method, and can be used if you experience conflicts with other pasting functionality (might also be a little faster)."
+		}
       }
     }
   },
