@@ -9,15 +9,23 @@ let extension: vscode.ExtensionContext = null;
 
 let indentOnPaste = () =>
 {
+	//get the clipboard contents...
+	let clipboard: string = getClipboard();
+	let originalClipboard:string = clipboard;
+	let lines = clipboard.split("\n");
+	let clipboardEndsWithReturn:boolean = lines[lines.length - 1].search(/\S/) == -1;
+
 	//get the line we will be pasting on...
 	let editor = vscode.window.activeTextEditor;
 	let pasteOnLineNumber = editor.selection.end.line;
 	let pasteOnLine: string = editor.document.lineAt(pasteOnLineNumber).text;
-	let pasteOnBlankLine: boolean = (pasteOnLine.search(/\S/) == -1);
+	let beforePastePosition:string = pasteOnLine.substr(0, editor.selection.start.character);
+	let pasteOnBlankLine: boolean = (beforePastePosition.search(/\S/) == -1);
 
 	//find the next line that is not blank, which we will inspect to determine how much indentation is needed...
+	//if the clipboard ends with a blank line, the next line to inspect is actually the line we're pasting on
 	let inspectLine: string = "";
-	for(let i = pasteOnLineNumber + 1; i < editor.document.lineCount; i++)
+	for(let i = pasteOnLineNumber + (clipboardEndsWithReturn?0:1); i < editor.document.lineCount; i++)
 	{
 		if (editor.document.lineAt(i).text.search(/\S/) > -1)
 		{
@@ -39,11 +47,6 @@ let indentOnPaste = () =>
 		}
 	});
 	if (isEndingBlock) indentationsNeeded++;
-
-	//get the clipboard contents and redo the indentations...
-	let clipboard: string = getClipboard();
-	let originalClipboard:string = clipboard;
-	let lines = clipboard.split("\n");
 
 	//just abort if there's nothing on the clipboard...
 	if (lines.length == 0)
