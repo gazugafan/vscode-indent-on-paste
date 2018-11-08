@@ -29,11 +29,6 @@ Via the command line:
 1. Open a command-line prompt
 2. Run `code --install-extension gazugafan.vscode-indent-on-paste`
 
-## Dependencies
-Should work out-of-the-box on Windows.
-
-Access to the system clipboard isn't available through the normal VS Code extension API. Instead, we rely on [Node-Copy-Paste](https://github.com/xavi-/node-copy-paste). Node-Copy-Paste is included with this extension and should work out-of-the-box on Windows (it uses `clip`). However, OSX and Linux users may need to install `pbcopy/pbpaste` or `xclip`, respectively. I'm honestly not sure, but check out [Node-Copy-Paste](https://github.com/xavi-/node-copy-paste) if you're having trouble, and feel free to update this README with your findings!
-
 ## Usage
 
 Just paste like normal! No need to change keybindings or anything.
