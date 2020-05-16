@@ -183,6 +183,10 @@ export function countIndents(str:string)
 export function setIndents(str:string, indents:number)
 {
 	let editor = vscode.window.activeTextEditor;
+	
+	//if multi-cursor is active we do not indent
+	if (editor.selections.length > 1) return str;
+
 	let indent:string = "\t";
 	if (editor.options.insertSpaces)
 	{
