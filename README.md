@@ -74,7 +74,8 @@ if (1)
 
 ## Contribute
 
-For any bugs and feature requests please open an issue. For code contributions please create a pull request. Enjoy!
+* For any bugs and feature requests please open an issue. For code contributions please create a pull request. Enjoy!
+* **Note to self:** To publish, run ```vsce publish``` **FROM WSL**. Otherwise, Linux permissions for the embedded ```xsel``` binary will be lost.
 
 ## LICENSE
 
