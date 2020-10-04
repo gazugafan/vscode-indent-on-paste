@@ -2,11 +2,11 @@
   "name": "vscode-indent-on-paste",
   "displayName": "Indent on Paste",
   "description": "Re-indents pasted code to match the destination",
-  "version": "2.3.5",
+  "version": "2.4.0",
   "publisher": "gazugafan",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.37.0"
   },
   "bugs": {
     "url": "https://github.com/gazugafan/vscode-indent-on-paste/issues"
@@ -21,8 +21,8 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
-    "typescript": "^1.8.5",
-    "vscode": "^0.11.0"
+    "@types/node": "^14.11.2",
+    "@types/vscode": "^1.49.0"
   },
   "dependencies": {
     "clipboardy": "^1.2.3"
@@ -59,7 +59,7 @@
             "workaround"
           ],
           "default": "native",
-          "description": "The method used to insert text when pasting. \"native\" uses VS Code's built-in paste method--retaining functionality such as \"editor.formatOnPaste\" and \"editor.autoIndent\". \"workaround\" completely bypasses VS Code's built-in paste method, and can be used if you experience conflicts with other pasting functionality (might also be a little faster)."
+          "description": "The method used to insert text when pasting. \"native\" (the default) uses VS Code's built-in paste method--retaining functionality such as \"editor.formatOnPaste\" and \"editor.autoIndent\". \"workaround\" completely bypasses VS Code's built-in paste method by inserting text directly into the active document, and can be used if you experience conflicts with other pasting functionality (might also be a little faster). A known issue with \"workaround\" prevents pasting outside the active editor, such as into the command pallete or search fields (use CTRL+SHIFT+V as a workaround)."
         }
       }
     }
