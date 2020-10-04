@@ -180,10 +180,37 @@ export function countIndents(str:string)
 	return indents;
 }
 
+export function removeIndents(str:string)
+{
+	let editor = vscode.window.activeTextEditor;
+	let start = 0;
+	let spaces = 0;
+	for(let x = 0; x < str.length; x++)
+	{
+		if (str.charAt(x).search(/\S/) > -1) break;
+		if (str.charAt(x) == " ")
+		{
+			spaces++;
+			if (spaces >= editor.options.tabSize)
+			{
+				start = x + 1;
+				spaces = 0;
+			}
+		}
+		else if (str.charAt(x) == "\t")
+		{
+			start = x + 1;
+			spaces = 0;
+		}
+	}
+
+	return str.substr(start);
+}
+
 export function setIndents(str:string, indents:number)
 {
 	let editor = vscode.window.activeTextEditor;
-	
+
 	//if multi-cursor is active we do not indent
 	if (editor.selections.length > 1) return str;
 
@@ -195,7 +222,7 @@ export function setIndents(str:string, indents:number)
 			indent += " ";
 	}
 
-	str = str.replace(/^\s+/g, ''); //trim leading whitespace
+	str = removeIndents(str); //trim leading indents
 	for(let x:number = 0; x < indents; x++)
 		str = indent + str;
 
