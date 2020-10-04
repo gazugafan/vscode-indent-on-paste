@@ -6,7 +6,7 @@
   "publisher": "gazugafan",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.37.0"
+    "vscode": "^1.49.0"
   },
   "bugs": {
     "url": "https://github.com/gazugafan/vscode-indent-on-paste/issues"
